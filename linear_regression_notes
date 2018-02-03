@@ -1,0 +1,38 @@
+linear regression modules: from sklearn.linear_model import LinearRegression, Lasso,
+                           Ridge, ElasticNet, LassoCV, RidgeCV, ElasticNetCV
+                           from sklearn.preprocessing import StandardScaler
+
+regression modeling workflow:
+- initialize model -> lm = LinearRegression()
+- fit model -> lm.fit(predictors, target)
+- get predictions -> lm.predict(predictors)
+- score model -> lm.score(predictors, target/target prediction)
+- attributes after fitting: lm.coef_, lm.intercept_
+
+Regression Regularization:
+1. Scaling Predictors (predictor - mean / std)
+- initializing standard scaler -> ss = StandardScaler()
+- fit predictors to standard scaler -> ss.fit(predictors)
+- scale predictors -> scaled_predictors = ss.transform(predictors)
+
+2. Ridge (controls effect of multicollinearity, effects larger coefficients more):
+- recommended alphas on log scale np.logspace(start, stop, n)
+- generated alphas as above
+- initialize model -> best_ridge = RidgeCV(alphas = list_of_alphas)
+- fit model -> best_ridge.fit(scaled_predictors, target)
+- score best alpha model -> best_ridge.score(scaled_predictors, target)
+- attribute after fitting: best_ridge.alpha_
+
+3. Lasso (eliminates smaller coefficients, useful with redundant or unimportant features):
+- generate list of alphas -> list_of_alphas = np.arange(start, stop, step)
+- initialize model -> best_lasso = LassoCV(alphas = list_of_alphas)
+- fit model -> best_lasso.fit(scaled_predictors, target)
+- score best alpha model -> best_lasso.score(scaled_predictors, target)
+- attribute after fitting: best_lasso.alpha_
+
+4. ElasticNet (ratio of Ridge/Lasso):
+- generate list of alphas
+- initialize model -> best_enet = ElasticNetCV(l1_ratio = list_of_ratios_of_lasso, alphas = list_of_alphas)
+- fit model -> best_enet.fit(scaled_predictors, target)
+- score best alpha model -> best_enet.score(scaled_predictors, target)
+- attribute aftre fitting -> best_enet.alpha_
